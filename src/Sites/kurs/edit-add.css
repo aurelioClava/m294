@@ -1,0 +1,84 @@
+/* AddForm.css */
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background-color: #fff;
+  }
+  
+  h2 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  input[type="text"],
+  .react-datepicker-wrapper{
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 5px;
+    box-sizing: border-box;
+  }
+
+  textarea{
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 5px;
+    box-sizing: border-box;
+    resize: vertical;
+  }
+
+  .react-datepicker__input-container input {
+    border: 0px;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 100%;
+  }
+
+  button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Optional: Add some spacing between form fields */
+  .form-group:not(:last-child) {
+    margin-bottom: 15px;
+  }
+  
+  .react-select__control {
+    width: 100%;
+  }
+  
+  .react-select__menu {
+    width: 100%;
+  }
+  
+  .react-select__menu-list {
+    max-height: 150px;
+  }
