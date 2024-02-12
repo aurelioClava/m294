@@ -3,10 +3,41 @@ import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './edit-add.css'
+import { useNavigate, useParams } from "react-router-dom";
+
 
 const AddForm = () => {
+    const navigate = useNavigate();
     const [dozentOptions, setDozentOptions] = useState([]);
     const [selectedDozent, setSelectedDozent] = useState(null);
+    const [selectedKurs, SetSelectedKurs] = useState(null);
+    const [formData, setFormData] = useState({
+      kursnummer: '',
+      kursthema: '',
+      inhalt: '',
+      nr_dozent: '',
+      startdatum: null,
+      enddatum: null,
+      dauer: ''
+    });
+
+    useEffect(() => {
+      fetch('https://aurelio.undefiniert.ch/tbl_kurse/id_kurs/' + id).then((response) => response.json())
+      .then((responseData) => SetSelectedKurs(responseData));
+    });
+
+    const { id } = useParams();
+    if(id){
+      setFormData({
+        kursnummer: selectedKurs.kursnummer,
+        kursthema: selectedKurs.kursthema,
+        inhalt: selectedKurs.inhalt, 
+        nr_dozent: selectedKurs.nr_dozent, 
+        startdatum: selectedKurs.startdatum, 
+        enddatum: selectedKurs.enddatum, 
+        dauer: selectedKurs.dauer
+      })
+    }
   
     useEffect(() => {
       // Fetch and set the list of dozents
@@ -23,16 +54,6 @@ const AddForm = () => {
           console.error('Error fetching dozents:', err);
         });
     }, []);
-
-  const [formData, setFormData] = useState({
-    kursnummer: '',
-    kursthema: '',
-    inhalt: '',
-    nr_dozent: '',
-    startdatum: null,
-    enddatum: null,
-    dauer: ''
-  });
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -83,7 +104,7 @@ const AddForm = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        // Handle the response data as needed
+        navigate("/kurse");
         console.log('POST request successful:', data);
       })
       .catch((err) => {
@@ -170,9 +191,9 @@ const AddForm = () => {
             required
           />
         </div>
-        <a href="/.."><button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-primary">
           Submit
-        </button></a>
+        </button>
       </form>
     </div>
   );

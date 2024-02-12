@@ -16,7 +16,11 @@ export const router = createBrowserRouter([
     element: <Table />,
   },
   {
-    path: "/Kurse/Edit",
+    path: "/Kurse/Edit/:id",
+    element: <AddForm />,
+  },
+  {
+    path: "/Kurse/Add",
     element: <AddForm />,
   },
 ]);

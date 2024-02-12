@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './table.css';
+import { useNavigate } from 'react-router-dom';
 
-function Table() {
+const Table = () => {
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -29,45 +31,33 @@ function Table() {
        });
   }, []);
 
-  return (
-    <div>
-      <div className="content">
-        <SearchBar searchTerm={searchTerm} handleSearch={handleSearch} handleClear={handleClear} />
-        <DataTable data={filteredData} />
+  function SearchBar({ searchTerm, handleSearch, handleClear }) {
+    return (
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search by name..."
+          value={searchTerm}
+          onChange={handleSearch}
+        />
+        <button onClick={handleClear}>Clear</button>
+        <a href="kurse/add">
+          <button>Kurs Hinzufügen</button>
+        </a>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
-function SearchBar({ searchTerm, handleSearch, handleClear }) {
-  return (
-    <div className="search-bar">
-      <input
-        type="text"
-        placeholder="Search by name..."
-        value={searchTerm}
-        onChange={handleSearch}
-      />
-      <button onClick={handleClear}>Clear</button>
-      <a href="kurse/edit">
-        <button>Kurs Hinzufügen</button>
-      </a>
-    </div>
-  );
-}
+  const handleEdit = (id) => {
+    navigate("/Edit/" + id);
+  };
 
-const handleEdit = (id) => {
-  
-  console.log(`Edit course with ID: ${id}`);
-};
-
-const handleDelete = (id) => {
-  fetch('https://aurelio.undefiniert.ch/tbl_kurse/id_kurs/' + id, {
-    method: 'DELETE',}).then(() => {
-      window.location.reload();
-    });
-  
-};
+  const handleDelete = (id) => {
+    fetch('https://aurelio.undefiniert.ch/tbl_kurse/id_kurs/' + id, {
+      method: 'DELETE',}).then(() => {
+        window.location.reload();
+      });
+  }
 
 
 function DataTable({ data }) {
@@ -106,6 +96,15 @@ function DataTable({ data }) {
       </tbody>
     </table>
   );
+}
+return (
+  <div>
+    <div className="content">
+      <SearchBar searchTerm={searchTerm} handleSearch={handleSearch} handleClear={handleClear} />
+      <DataTable data={filteredData} />
+    </div>
+  </div>
+);
 }
 
 export default Table;
