@@ -6,47 +6,27 @@ import './edit-add.css'
 import { useNavigate, useParams } from "react-router-dom";
 
 
-const KursAddForm = () => {
+const Lerndern_lehrbetrieb_AddForm = () => {
     const navigate = useNavigate();
     const [dozentOptions, setDozentOptions] = useState([]);
     const [selectedDozent, setSelectedDozent] = useState(null);
-    const [selectedKurs, SetSelectedKurs] = useState(null);
     const [formData, setFormData] = useState({
-      kursnummer: '',
-      kursthema: '',
-      inhalt: '',
-      nr_dozent: '',
-      startdatum: null,
-      enddatum: null,
-      dauer: ''
-    });
-
-    useEffect(() => {
-      fetch('https://aurelio.undefiniert.ch/tbl_kurse/id_kurs/' + id).then((response) => response.json())
-      .then((responseData) => SetSelectedKurs(responseData));
+      nr_lernende: '',
+      start: '',
+      ende: '',
+      beruf: ''
     });
 
     const { id } = useParams();
-    if(id){
-      setFormData({
-        kursnummer: selectedKurs.kursnummer,
-        kursthema: selectedKurs.kursthema,
-        inhalt: selectedKurs.inhalt, 
-        nr_dozent: selectedKurs.nr_dozent, 
-        startdatum: selectedKurs.startdatum, 
-        enddatum: selectedKurs.enddatum, 
-        dauer: selectedKurs.dauer
-      })
-    }
   
     useEffect(() => {
       // Fetch and set the list of dozents
-      fetch('https://aurelio.undefiniert.ch/tbl_dozenten/all/all')
+      fetch('https://aurelio.undefiniert.ch/tbl_lernende/all/all')
         .then((response) => response.json())
-        .then((dozents) => {
-          const options = dozents.map((dozent) => ({
-            value: dozent.id_dozent,
-            label: `${dozent.id_dozent} - ${dozent.vorname} ${dozent.nachname}`,
+        .then((lernende) => {
+          const options = lernende.map((lernende) => ({
+            value: lernende.id_lernende,
+            label: `${lernende.id_lernende} - ${lernende.vorname} ${lernende.nachname}`,
           }));
           setDozentOptions(options);
         })
@@ -88,23 +68,21 @@ const KursAddForm = () => {
     e.preventDefault();
     var myHeaders = new Headers();
     myHeaders.append('Content-Type','application/json; charset=UTF-8');
-    fetch('https://aurelio.undefiniert.ch/tbl_kurse', {
+    fetch('https://aurelio.undefiniert.ch/tbl_kurse_lernende', {
       method: 'POST',
       headers: myHeaders,
       body: 
 `\{
-    "kursnummer" : \"${formData.kursnummer}\",
-    "kursthema" : \"${formData.kursthema}\",
-    "kursinhalt" : \"${formData.inhalt}\",
-    "nr_dozent" : ${selectedDozent.value},
-    "startdatum" : \"${formatDate(formData.startdatum)}\",
-    "enddatum" : \"${formatDate(formData.enddatum)}\",
-    "dauer" : \"${formData.dauer}\"
+    "nr_lehrbetrieb": ${id},
+    "nr_lernende" : ${selectedDozent.value},
+    "start" : \"${formatDate(formData.start)}\",
+    "ende" : \"${formatDate(formData.ende)}\",
+    "beruf" : \"${formData.beruf}\"
 \}`,
     })
       .then((response) => response.json())
       .then((data) => {
-        navigate("/kurse");
+        navigate("/kurse_lernende");
         console.log('POST request successful:', data);
       })
       .catch((err) => {
@@ -114,57 +92,25 @@ const KursAddForm = () => {
 
   return (
     <div className="container mt-5">
-      <h2>Add Course Form</h2>
+      <h2>Add Lernende Form</h2>
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="kursnummer">Kursnummer:</label>
-          <input
-            type="text"
-            className="form-control"
-            id="kursnummer"
-            onChange={handleChange}
-            value={formData.kursnummer}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="kursthema">Kursthema:</label>
-          <input
-            type="text"
-            className="form-control"
-            id="kursthema"
-            onChange={handleChange}
-            value={formData.kursthema}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="inhalt">Inhalt:</label>
-          <textarea
-            className="form-control"
-            id="inhalt"
-            rows="3"
-            onChange={handleChange}
-            value={formData.inhalt}
-            required
-          />
-        </div>
-        <div className="form-group">
-        <label htmlFor="nr_dozent">Dozent Nummer:</label>
+      <div className='form-group'>
+        <label htmlFor="nr_lernende">Lernende Nummer:</label>
         <Select
-          id="nr_dozent"
+          id="nr_lernende"
           options={dozentOptions}
           value={selectedDozent}
           onChange={(selectedOption) => setSelectedDozent(selectedOption)}
           isSearchable
-          placeholder="Select a Dozent"
+          placeholder="Select a Lernender"
         />
         </div>
         <div className="form-group">
           <label htmlFor="startdatum">Startdatum:</label>
           <DatePicker
-            selected={formData.startdatum}
-            onChange={(date) => handleDateChange(date, 'startdatum')}
+            id="startdatum"
+            selected={formData.start}
+            onChange={(date) => handleDateChange(date, 'start')}
             dateFormat="yyyy-MM-dd"
             className="form-control"
             required
@@ -173,21 +119,22 @@ const KursAddForm = () => {
         <div className="form-group">
           <label htmlFor="enddatum">Enddatum:</label>
           <DatePicker
-            selected={formData.enddatum}
-            onChange={(date) => handleDateChange(date, 'enddatum')}
+            id="enddatum"
+            selected={formData.ende}
+            onChange={(date) => handleDateChange(date, 'ende')}
             dateFormat="yyyy-MM-dd"
             className="form-control"
             required
           />
         </div>
         <div className="form-group">
-          <label htmlFor="dauer">Dauer:</label>
+          <label htmlFor="beruf">Beruf:</label>
           <input
             type="text"
             className="form-control"
-            id="dauer"
+            id="beruf"
             onChange={handleChange}
-            value={formData.dauer}
+            value={formData.beruf}
             required
           />
         </div>
@@ -199,4 +146,4 @@ const KursAddForm = () => {
   );
 };
 
-export default KursAddForm;
+export default Lerndern_lehrbetrieb_AddForm;

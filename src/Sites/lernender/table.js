@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './table.css';
 import { useNavigate } from 'react-router-dom';
 
-const KursTable = () => {
+const LernendeTable = () => {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
 
@@ -17,11 +17,11 @@ const KursTable = () => {
   };
 
   const filteredData = data.filter((item) =>
-    item.kursnummer.toLowerCase().includes(searchTerm.toLowerCase())
+    item.nachname.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   useEffect(() => {
-    fetch('https://aurelio.undefiniert.ch/tbl_kurse/all/all')
+    fetch('https://aurelio.undefiniert.ch/tbl_lernende/all/all')
        .then((response) => response.json())
        .then((data) => {
           setData(data);
@@ -41,19 +41,19 @@ const KursTable = () => {
           onChange={handleSearch}
         />
         <button onClick={handleClear}>Clear</button>
-        <a href="kurse/add">
-          <button>Kurs Hinzufügen</button>
+        <a href="lernende/add">
+          <button>Lernender Hinzufügen</button>
         </a>
       </div>
     );
   }
 
   const handleEdit = (id) => {
-    navigate("/kurse/Edit/" + id);
+    navigate("/lernende/Edit/" + id);
   };
 
   const handleDelete = (id) => {
-    fetch('https://aurelio.undefiniert.ch/tbl_kurse/id_kurs/' + id, {
+    fetch('https://aurelio.undefiniert.ch/tbl_lernende/id_lernende/' + id, {
       method: 'DELETE',}).then(() => {
         window.location.reload();
       });
@@ -66,30 +66,38 @@ function DataTable({ data }) {
       <thead>
         <tr>
           <th>ID</th>
-          <th>Kursnummer</th>
-          <th>Kursthema</th>
-          <th>Inhalt</th>
-          <th>Startdatum</th>
-          <th>Enddatum</th>
-          <th>Dauer</th>
-          <th>nr_dozent</th>
+          <th>Name</th>
+          <th>Strasse</th>
+          <th>Plz</th>
+          <th>Ort</th>
+          <th>Land</th>
+          <th>Geschlecht</th>
+          <th>Telefon</th>
+          <th>Handy</th>
+          <th>Email</th>
+          <th>Email Privat</th>
+          <th>Birthdate</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
         {data.map((item) => (
-          <tr key={item.id_kurs}>
-            <td>{item.id_kurs}</td>
-            <td>{item.kursnummer}</td>
-            <td>{item.kursthema}</td>
-            <td>{item.kursinhalt}</td>
-            <td>{item.startdatum}</td>
-            <td>{item.enddatum}</td>
-            <td>{item.dauer}</td>
-            <td>{item.nr_dozent}</td>
+          <tr key={item.id_lernende}>
+            <td>{item.id_lernende}</td>
+            <td>{item.vorname + " " + item.nachname}</td>
+            <td>{item.strasse}</td>
+            <td>{item.plz}</td>
+            <td>{item.ort}</td>
+            <td>{item.nr_land}</td>
+            <td>{item.geschlecht}</td>
+            <td>{item.telefon}</td>
+            <td>{item.handy}</td>
+            <td>{item.email}</td>
+            <td>{item.email_privat}</td>
+            <td>{item.birthdate}</td>
             <td>
-              <button onClick={() => handleEdit(item.id_kurs)}>Edit</button>
-              <button onClick={() => handleDelete(item.id_kurs)}>Delete</button>
+              <button onClick={() => handleEdit(item.id_lernende)}>Edit</button>
+              <button onClick={() => handleDelete(item.id_lernende)}>Delete</button>
             </td>
           </tr>
         ))}
@@ -107,4 +115,4 @@ return (
 );
 }
 
-export default KursTable;
+export default LernendeTable;

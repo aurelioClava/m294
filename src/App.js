@@ -24,11 +24,13 @@ function Navbar() {
   return (
     <nav className="navbar">
         <ul>
-            <li><a href="#lehrbetriebe">Lehrbetriebe</a></li>
-            <li><a href="#lernende">Lernende</a></li>
-            <li><a href="#länder">Länder</a></li>
-            <li><a href="#dozenten">Dozenten</a></li>
-            <li><a href="kurse">Kurse</a></li>
+            <li><a href="/lehrbetrieb">Lehrbetriebe</a></li>
+            <li><a href="/lernende">Lernende</a></li>
+            <li><a href="/länder">Länder</a></li>
+            <li><a href="/dozenten">Dozenten</a></li>
+            <li><a href="/kurse">Kurse</a></li>
+            <li><a href="/Lerndern_Kurs_Table">Lernende und Kurse</a></li>
+            <li><a href='/lernende_lehrbetrieb_Table'>Lernende und Lehrbetriebe</a></li>
         </ul>
     </nav>
   );

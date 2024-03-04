@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './table.css';
 import { useNavigate } from 'react-router-dom';
 
-const KursTable = () => {
-  const navigate = useNavigate();
+const LänderTable = () => {
   const [data, setData] = useState([]);
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -17,11 +16,11 @@ const KursTable = () => {
   };
 
   const filteredData = data.filter((item) =>
-    item.kursnummer.toLowerCase().includes(searchTerm.toLowerCase())
+    item.country.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   useEffect(() => {
-    fetch('https://aurelio.undefiniert.ch/tbl_kurse/all/all')
+    fetch('https://aurelio.undefiniert.ch/tbl_countries/all/all', {method: 'GET'})
        .then((response) => response.json())
        .then((data) => {
           setData(data);
@@ -41,19 +40,15 @@ const KursTable = () => {
           onChange={handleSearch}
         />
         <button onClick={handleClear}>Clear</button>
-        <a href="kurse/add">
-          <button>Kurs Hinzufügen</button>
+        <a href="Länder/add">
+          <button>Land Hinzufügen</button>
         </a>
       </div>
     );
   }
 
-  const handleEdit = (id) => {
-    navigate("/kurse/Edit/" + id);
-  };
-
   const handleDelete = (id) => {
-    fetch('https://aurelio.undefiniert.ch/tbl_kurse/id_kurs/' + id, {
+    fetch('https://aurelio.undefiniert.ch/tbl_countries/id_country/' + id, {
       method: 'DELETE',}).then(() => {
         window.location.reload();
       });
@@ -66,30 +61,17 @@ function DataTable({ data }) {
       <thead>
         <tr>
           <th>ID</th>
-          <th>Kursnummer</th>
-          <th>Kursthema</th>
-          <th>Inhalt</th>
-          <th>Startdatum</th>
-          <th>Enddatum</th>
-          <th>Dauer</th>
-          <th>nr_dozent</th>
+          <th>Land</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
         {data.map((item) => (
-          <tr key={item.id_kurs}>
-            <td>{item.id_kurs}</td>
-            <td>{item.kursnummer}</td>
-            <td>{item.kursthema}</td>
-            <td>{item.kursinhalt}</td>
-            <td>{item.startdatum}</td>
-            <td>{item.enddatum}</td>
-            <td>{item.dauer}</td>
-            <td>{item.nr_dozent}</td>
+          <tr key={item.id_country}>
+            <td>{item.id_country}</td>
+            <td>{item.country}</td>
             <td>
-              <button onClick={() => handleEdit(item.id_kurs)}>Edit</button>
-              <button onClick={() => handleDelete(item.id_kurs)}>Delete</button>
+              <button onClick={() => handleDelete(item.id_country)}>Delete</button>
             </td>
           </tr>
         ))}
@@ -107,4 +89,4 @@ return (
 );
 }
 
-export default KursTable;
+export default LänderTable;
